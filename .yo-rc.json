@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "avarona",
+      "authorEmail": "avarona10@gmail.com",
+      "authorUrl": "https://varona.herokuapp.com"
+    }
+  }
+}
