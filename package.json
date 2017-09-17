@@ -1,6 +1,6 @@
 {
   "name": "generator-fullstack-webapp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React-Redux fullstack generator running on Node.js with express and postgres",
   "homepage": "",
   "author": {
@@ -50,6 +50,6 @@
       "node": true
     }
   },
-  "repository": "https://github.com/avarona/react-app.git",
+  "repository": "https://github.com/avarona/generator-fullstack-webapp.git",
   "license": "ISC"
 }

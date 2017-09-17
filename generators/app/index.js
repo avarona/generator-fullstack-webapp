@@ -35,6 +35,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
+    // Package.json
     this.fs.copyTpl(
       this.templatePath('_package.json'),
       this.destinationPath('package.json'), {
@@ -74,11 +75,6 @@ module.exports = class extends Generator {
     this.fs.copy(
       this.templatePath('README.md'),
       this.destinationPath('README.md')
-    );
-    // Gitignore
-    this.fs.copy(
-      this.templatePath('.gitignore'),
-      this.destinationPath('.gitignore')
     );
   }
 
