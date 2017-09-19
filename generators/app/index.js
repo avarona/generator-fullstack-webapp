@@ -18,18 +18,22 @@ module.exports = class extends Generator {
       default: true
     }, {
       type: 'input',
-      name: 'name',
+      name: 'appName',
       message: 'Your project name',
       // Defaults to the project's folder name if the input is skipped
       default: this.appname
+    }, {
+      type: 'input',
+      name: 'authorName',
+      message: 'Your name'
     }];
 
     return this.prompt(prompts).then(props => {
       // To access props later use this.props.someAnswer;
       const done = this.async();
       this.props = props;
-      this.log(props.name)
-      this.name = this.props.name;
+      this.appName = this.props.appName.trim().split(' ').join('-');
+      this.authorName = this.props.authorName.trim().split(' ').join('-');
       done();
     });
   }
@@ -39,7 +43,8 @@ module.exports = class extends Generator {
     this.fs.copyTpl(
       this.templatePath('_package.json'),
       this.destinationPath('package.json'), {
-        name: this.props.name
+        appName: this.appName,
+        authorName: this.authorName
       }
     );
     // Frontend

@@ -1,5 +1,5 @@
 {
-  "name": "<%= name %>",
+  "name": "<%= appName %>",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -22,7 +22,7 @@
     "node",
     "webpack"
   ],
-  "author": "avarona",
+  "author": "<%= authorName %>",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.1",
