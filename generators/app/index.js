@@ -3,6 +3,7 @@
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
+const path = require('path');
 
 module.exports = class extends Generator {
   prompting() {
@@ -11,79 +12,75 @@ module.exports = class extends Generator {
       'Welcome to the wonderful ' + chalk.red('fullstack-webapp') + ' generator!'
     ));
 
+    const array = this.env.cwd.split('/');
+
     const prompts = [{
-      type: 'confirm',
-      name: 'someAnswer',
-      message: 'Would you like to enable this option?',
-      default: true
-    }, {
       type: 'input',
       name: 'appName',
       message: 'Your project name',
       // Defaults to the project's folder name if the input is skipped
-      default: this.appname
+      default: this.appName || array[array.length - 1]
     }, {
       type: 'input',
       name: 'authorName',
-      message: 'Your name'
+      message: 'Your name',
+      default: this.authorName
+    }, {
+      type: 'confirm',
+      name: 'mkdirBool',
+      message: 'Would you like to create a folder?',
+      default: true
     }];
 
-    return this.prompt(prompts).then(props => {
-      // To access props later use this.props.someAnswer;
+    return this.prompt(prompts.slice(0, 2)).then(props => {
       const done = this.async();
-      this.props = props;
-      this.appName = this.props.appName.trim().split(' ').join('-');
-      this.authorName = this.props.authorName.trim().split(' ').join('-');
-      done();
+      this.inputs = props;
+      this.appName = this.inputs.appName.trim().split(' ').join('-');
+      this.authorName = this.inputs.authorName.trim().split(' ').join('-');
+
+      return this.prompt(prompts[2]).then(prop => {
+        this.inputs.mkdirBool = prop.mkdirBool;
+        this.mkdirBool = prop.mkdirBool;
+        done();
+      })
+      .catch(err => console.error(err));
     });
   }
 
   writing() {
-    // Package.json
+    // Change cwd based on prompt
+    let copyPath = this.env.cwd;
+    if (this.mkdirBool) {
+      copyPath = this.appName;
+    }
+
+    // Copy package.json
     this.fs.copyTpl(
       this.templatePath('_package.json'),
-      this.destinationPath('package.json'), {
+      this.destinationPath(path.join(copyPath, 'package.json')), {
         appName: this.appName,
         authorName: this.authorName
       }
     );
-    // Frontend
+
+    // All other files & directories
     this.fs.copy(
-      this.templatePath('app'),
-      this.destinationPath('app')
-    );
-    // Database
-    this.fs.copy(
-      this.templatePath('db'),
-      this.destinationPath('db')
-    );
-    // Public
-    this.fs.copy(
-      this.templatePath('public'),
-      this.destinationPath('public')
-    );
-    // Server
-    this.fs.copy(
-      this.templatePath('server'),
-      this.destinationPath('server')
-    );
-    this.fs.copy(
-      this.templatePath('app.js'),
-      this.destinationPath('app.js')
-    );
-    // Bundler
-    this.fs.copy(
-      this.templatePath('webpack.config.js'),
-      this.destinationPath('webpack.config.js')
-    );
-    // Readme.md
-    this.fs.copy(
-      this.templatePath('README.md'),
-      this.destinationPath('README.md')
+      [
+        this.templatePath('**.!(json)'),
+        this.templatePath('app'),
+        this.templatePath('db'),
+        this.templatePath('public'),
+        this.templatePath('server')
+      ], this.destinationPath(copyPath)
     );
   }
 
   install() {
+    // Install dependencies in new directory
+    const npmdir = path.join(process.cwd(), this.appName);
+    if (this.mkdirBool) {
+      process.chdir(npmdir);
+    }
     this.npmInstall();
   }
 };

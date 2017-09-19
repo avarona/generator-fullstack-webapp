@@ -1,6 +1,6 @@
 {
   "name": "generator-fullstack-webapp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A React-Redux fullstack generator running on Node.js with express and postgres",
   "homepage": "",
   "author": {
