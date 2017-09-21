@@ -33,8 +33,7 @@ describe('generator-fullstack-webapp:app', () => {
       'server/index.js',
       'server/routes/examples.js',
       'app.js',
-      'webpack.config.js',
-      'README.md'
+      'webpack.config.js'
     ]);
   });
 });
