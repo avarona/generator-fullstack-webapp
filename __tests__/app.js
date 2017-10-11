@@ -24,6 +24,7 @@ describe('generator-fullstack-webapp:app', () => {
       'app/redux/reducers/example.js',
       'app/routes.js',
       'app/store.jsx',
+      'db/seed.js',
       'db/_db.js',
       'db/index.js',
       'db/models/user.js',
