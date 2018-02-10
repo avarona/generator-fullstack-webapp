@@ -1,2 +1,22 @@
 node_modules
 coverage
+
+# ...except the symlink to ourselves.
+!node_modules/APP
+
+# Yarn lockfile
+yarn.lock
+yarn-debug.log
+yarn-error.log
+
+# Compiled JS
+public/dist
+
+# NPM errors
+npm-debug.log
+
+# API keys
+keys.js
+
+# dotenv environment variables
+.env
