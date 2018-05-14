@@ -43,7 +43,7 @@ module.exports = class extends Generator {
         this.mkdirBool = prop.mkdirBool;
         done();
       })
-      .catch(err => console.error(err));
+        .catch(err => console.error(err));
     });
   }
 
