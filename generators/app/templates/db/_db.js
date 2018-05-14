@@ -6,7 +6,8 @@ const dbName = 'example';	// TODO: CHANGE dbName
 const url = process.env.DATABASE_URL || `postgres://localhost:5432/${dbName}`;
 
 const db = new Sequelize(url, {
-	logging: false
+	logging: false,
+	operatorsAliases: false
 });
 
 module.exports = db;
