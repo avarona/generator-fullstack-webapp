@@ -66,8 +66,9 @@ module.exports = class extends Generator {
     // All other files & directories
     this.fs.copy(
       [
-        this.templatePath('**.!(json)'),
+        this.templatePath('*.js'),
         this.templatePath('app'),
+        this.templatePath('bin'),
         this.templatePath('db'),
         this.templatePath('public'),
         this.templatePath('server')
@@ -81,6 +82,18 @@ module.exports = class extends Generator {
     if (this.mkdirBool) {
       process.chdir(npmdir);
     }
-    this.npmInstall();
+    this.npmInstall()
+      .then(() => {
+        let exec = require('child_process').exec;
+        console.log(chalk.cyan('npm i --package-lock-only; npm audit fix'));
+        exec('npm i --package-lock-only; npm audit fix', function (error, stdout, stderr) {
+          console.log(chalk.green('stdout: ' + stdout));
+          console.log('stderr: ' + stderr);
+          if (error !== null) {
+            console.log('exec error: ' + error);
+          }
+        });
+      })
+      .catch(err => console.error(err));
   }
 };

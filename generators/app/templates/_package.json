@@ -4,9 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "build": "webpack -w --progress --colors",
-    "seed": "node ./db/seed.js",
+    "postinstall": "bin/setup",
+    "build": "webpack",
+    "build-watch": "webpack -w --progress --colors",
+    "start": "node app.js",
+    "dev-start": "nodemon app.js",
+    "seed": "node db/seed.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "babel": {
@@ -48,15 +51,12 @@
     "chai": "^4.1.2",
     "chalk": "^2.1.0",
     "css-loader": "^0.28.0",
-    "file-loader": "^1.1.11",
     "mocha": "^5.1.1",
     "morgan": "^1.8.1",
     "node-sass": "^4.5.2",
     "nodemon": "^1.11.0",
     "sass-loader": "^7.0.1",
-    "sinon": "^5.0.7",
     "style-loader": "^0.21.0",
-    "url-loader": "^1.0.1",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
   }
