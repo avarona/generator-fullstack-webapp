@@ -19,7 +19,7 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         options: {
-          presets: ['react', 'env']
+          presets: ['@babel/react', '@babel/env']
         }
       }, {
         test: /\.(scss|sass)$/,
