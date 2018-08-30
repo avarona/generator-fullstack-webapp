@@ -1,6 +1,6 @@
 {
   "name": "generator-fullstack-webapp",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A React-Redux fullstack generator running on Node.js with express and postgres (React, Redux, Express, Sequelize, Webpack)",
   "homepage": "",
   "author": {
@@ -23,8 +23,8 @@
     "node"
   ],
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-xo-space": "^0.18.0",
+    "eslint": "^5.4.0",
+    "eslint-config-xo-space": "^0.20.0",
     "jest": "^23.1.0",
     "jest-cli": "^23.1.0",
     "yeoman-assert": "^3.1.1",
@@ -32,8 +32,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.1",
-    "nsp": "^3.2.1",
-    "yeoman-generator": "^2.0.5",
+    "yeoman-generator": "^3.1.1",
     "yosay": "^2.0.2"
   },
   "jest": {
