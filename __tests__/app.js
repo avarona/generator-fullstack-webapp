@@ -24,6 +24,7 @@ describe('generator-fullstack-webapp:app', () => {
       'app/redux/reducers/example.js',
       'app/routes.js',
       'app/store.jsx',
+      'config/.env.config',
       'db/seed.js',
       'db/_db.js',
       'db/index.js',
@@ -33,7 +34,9 @@ describe('generator-fullstack-webapp:app', () => {
       'public/sass/layout.scss',
       'server/index.js',
       'server/routes/examples.js',
-      'app.js',
+      '.env',
+      '.gitignore',
+      'index.js',
       'webpack.config.js'
     ]);
   });

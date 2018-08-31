@@ -10,6 +10,9 @@ const chalk = require('chalk');
 const fs = require('fs');
 const { resolve } = require('path');
 const appLink = resolve(__dirname, '..', 'node_modules', 'APP');
+const { exec } = require('child_process');
+
+console.log(chalk.blue('Starting bin/setup...'))
 
 const symlinkError = error =>
 `*******************************************************************
@@ -60,3 +63,34 @@ function ensureAppSymlink() {
 if (module === require.main) {
   ensureAppSymlink()
 }
+
+// environment variables
+require('dotenv-safe').config({
+  allowEmptyValues: true,
+  example: 'config/.env.config'
+});
+
+// Build webpack
+exec('webpack', (error, stdout, stderr) => {
+  if (error) {
+    console.error(chalk.red(`exec error: ${error}`));
+    return;
+  }
+  console.log(chalk.green('webpack bundled: ') + stdout);
+  // Create database
+  exec(`createdb -e ${process.env.DATABASE_NAME}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error(chalk.red(`exec error: ${error}`));
+      return;
+    }
+    console.log(chalk.green('database created: ') + stdout);
+    // Seed database
+    exec('yarn seed', (error, stdout, stderr) => {
+      if (error) {
+        console.error(chalk.red(`exec error: ${error}`));
+        return;
+      }
+      console.log(chalk.green('database seeded: ') + stdout);
+    });
+  });
+});

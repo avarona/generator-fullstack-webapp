@@ -26,11 +26,13 @@ app.use(express.static(resolve(__dirname, 'public')))
 app.get('/*', (req, res) => res.sendFile(resolve(__dirname, 'public/index.html')));
 
 // server listening!
-app.listen(process.env.PORT || 3000, () => {
-  console.log(chalk.cyan('Server is listening'), chalk.yellow('http://localhost:3000'));
+const port = process.env.PORT || 3000;
+const dbName = process.env.DATABASE_NAME;
+app.listen(port, () => {
+  console.log(chalk.cyan('Server is listening'), chalk.yellow(process.env.SERVER_URL || `http://localhost:${port}`));
   db.sync({force: false})
   .then(() => {
-    console.log(chalk.cyan('Database is running'));
+    console.log(chalk.cyan('Database is running'), chalk.blue(process.env.DATABASE_URL || `postgres://localhost:5432/${dbName}`));
   })
   .catch(err => console.error(err));
 });

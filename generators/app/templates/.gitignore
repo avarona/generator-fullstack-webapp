@@ -1,5 +1,7 @@
+.ds_store
+
+# Ignore all node_modules
 node_modules
-coverage
 
 # ...except the symlink to ourselves.
 !node_modules/APP
@@ -9,8 +11,12 @@ yarn.lock
 yarn-debug.log
 yarn-error.log
 
+# NPM errors
+npm-debug.log
+npm-error.log
+
 # Compiled JS
 public/dist
 
-# NPM errors
-npm-debug.log
+# Environment variables
+.env

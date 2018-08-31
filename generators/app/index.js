@@ -4,6 +4,7 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const path = require('path');
+const {exec} = require('child_process');
 
 module.exports = class extends Generator {
   prompting() {
@@ -63,15 +64,24 @@ module.exports = class extends Generator {
       }
     );
 
+    this.fs.copyTpl(
+      this.templatePath('config/_.env'),
+      this.destinationPath(path.join(copyPath, '.env')), {
+        database: this.appName
+      }
+    );
+
     // All other files & directories
     this.fs.copy(
       [
         this.templatePath('*.js'),
         this.templatePath('app'),
         this.templatePath('bin'),
+        this.templatePath('config/!(_.env)'),
         this.templatePath('db'),
         this.templatePath('public'),
-        this.templatePath('server')
+        this.templatePath('server'),
+        this.templatePath('.gitignore')
       ], this.destinationPath(copyPath)
     );
   }
@@ -82,18 +92,11 @@ module.exports = class extends Generator {
     if (this.mkdirBool) {
       process.chdir(npmdir);
     }
-    this.npmInstall()
-      .then(() => {
-        let exec = require('child_process').exec;
-        console.log(chalk.cyan('npm i --package-lock-only; npm audit fix'));
-        exec('npm i --package-lock-only; npm audit fix', function (error, stdout, stderr) {
-          console.log(chalk.green('stdout: ' + stdout));
-          console.log('stderr: ' + stderr);
-          if (error !== null) {
-            console.log('exec error: ' + error);
-          }
-        });
-      })
-      .catch(err => console.error(err));
+
+    // Create symlink for bin/setup
+    const sympath = path.join(npmdir, 'bin');
+    exec(`ln -s ${sympath}/setup.js ${sympath}/setup`);
+
+    this.yarnInstall();
   }
 };
