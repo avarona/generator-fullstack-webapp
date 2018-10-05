@@ -12,8 +12,6 @@ const { resolve } = require('path');
 const appLink = resolve(__dirname, '..', 'node_modules', 'APP');
 const { exec } = require('child_process');
 
-console.log(chalk.blue('Starting bin/setup...'))
-
 const symlinkError = error =>
 `*******************************************************************
 ${appLink} must point to '..'
@@ -33,6 +31,7 @@ Then run me again.
 ********************************************************************`
 
 function makeAppSymlink() {
+  console.log(chalk.blue('Starting bin/setup...'));
   console.log(`Linking '${appLink}' to '..'`)
   try {
     // fs.unlinkSync docs: https://nodejs.org/api/fs.html#fs_fs_unlinksync_path
@@ -57,6 +56,7 @@ function ensureAppSymlink() {
     }
   } catch (error) {
     makeAppSymlink()
+    runPostInstall()
   }
 }
 
@@ -70,27 +70,29 @@ require('dotenv-safe').config({
   example: 'config/.env.config'
 });
 
-// Build webpack
-exec('webpack', (error, stdout, stderr) => {
-  if (error) {
-    console.error(chalk.red(`exec error: ${error}`));
-    return;
-  }
-  console.log(chalk.green('webpack bundled: ') + stdout);
-  // Create database
-  exec(`createdb -e ${process.env.DATABASE_NAME}`, (error, stdout, stderr) => {
+function runPostInstall() {
+  // Build webpack
+  exec('webpack', (error, stdout, stderr) => {
     if (error) {
       console.error(chalk.red(`exec error: ${error}`));
       return;
     }
-    console.log(chalk.green('database created: ') + stdout);
-    // Seed database
-    exec('yarn seed', (error, stdout, stderr) => {
+    console.log(chalk.green('webpack bundled: ') + stdout);
+    // Create database
+    exec(`createdb -e ${process.env.DATABASE_NAME}`, (error, stdout, stderr) => {
       if (error) {
         console.error(chalk.red(`exec error: ${error}`));
         return;
       }
-      console.log(chalk.green('database seeded: ') + stdout);
+      console.log(chalk.green('database created: ') + stdout);
+      // Seed database
+      exec('yarn seed', (error, stdout, stderr) => {
+        if (error) {
+          console.error(chalk.red(`exec error: ${error}`));
+          return;
+        }
+        console.log(chalk.green('database seeded: ') + stdout);
+      });
     });
   });
-});
+}
