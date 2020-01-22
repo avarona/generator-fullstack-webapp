@@ -26,7 +26,7 @@
     "eslint": "^5.4.0",
     "eslint-config-xo-space": "^0.20.0",
     "jest": "^23.1.0",
-    "jest-cli": "^23.1.0",
+    "jest-cli": "^25.1.0",
     "yeoman-assert": "^3.1.1",
     "yeoman-test": "^1.7.2"
   },
